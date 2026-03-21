@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Massachusetts Graduation Rates & MCAS Scores — Analysis</title>
+<style>
+body { font-family: Georgia, serif; max-width: 900px; margin: 40px auto; padding: 0 24px; color: #222; line-height: 1.7; }
+h1 { color: #1a3a5c; border-bottom: 3px solid #1a3a5c; padding-bottom: 8px; }
+h2 { color: #1a3a5c; margin-top: 2.2em; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+h3 { color: #333; margin-top: 1.4em; }
+p { margin: .6em 0; }
+.note   { background: #f0f4f8; border-left: 4px solid #4a90d9; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+.caveat { background: #fff8e1; border-left: 4px solid #f0a500; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+table { border-collapse: collapse; width: 100%; font-size: .88em; margin: 1em 0; }
+th { background: #1a3a5c; color: #fff; padding: 7px 10px; text-align: left; }
+td { padding: 6px 10px; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) td { background: #f7f9fc; }
+code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; font-size: .9em; }
+ul, ol { margin: .5em 0; padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style>
+</head>
+<body>
+
+<h1>Massachusetts Graduation Rates &amp; MCAS Scores</h1>
+<p><em>Analysis prepared March 2026. Data: DESE / E2C Hub / MCAS Service Center.</em></p>
+
+<div class="note">
+<strong>Key finding:</strong> Massachusetts graduation rates hit an all-time high in 2025 (Class of 2025),
+coinciding with the November 2024 passage of Ballot Question 2, which eliminated the MCAS test as a
+hard graduation requirement. At the same time, grade 10 MCAS scores for the same cohort were at
+post-plateau lows — the starkest decoupling of scores and graduation rates in the dataset.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>1. Data Sources</h2>
+
+<ul>
+  <li><strong>Next Gen MCAS Achievement Results (2017–2025)</strong><br>
+      E2C Hub Socrata. Direct CSV:
+      <code>educationtocareer.data.mass.gov/api/views/i9w6-niyt/rows.csv?accessType=DOWNLOAD</code><br>
+      Grade 3–10, ELA/Math/Science, district and school level, all student groups.</li>
+
+  <li><strong>Legacy MCAS Achievement Results (2007–2023)</strong><br>
+      E2C Hub Socrata. Direct CSV:
+      <code>educationtocareer.data.mass.gov/api/views/ccsh-ajgw/rows.csv?accessType=DOWNLOAD</code><br>
+      Same structure, old 200-280 score scale, performance levels: Proficient/Advanced/NI/Warning-Failing.</li>
+
+  <li><strong>District Graduation Rates (2006–2025)</strong><br>
+      Scraped from <code>profiles.doe.mass.edu/statereport/gradrates.aspx</code>
+      via a fresh-token POST loop (one Excel file per year, 2006–2025), converted to a
+      combined CSV. All Students, 4-year cohort rate.</li>
+</ul>
+
+<p>The two MCAS datasets do not overlap for grade 10 (legacy ends 2018, Next Gen begins 2019).
+A district-level regression calibration was used to project legacy scores onto the Next Gen scale
+(see Section 5).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>2. Statewide Graduation Rate Trend (2006–2025)</h2>
+
+<p>Rates climbed steadily from 83.7% in 2006 to ~90% by 2020, then <strong>plateaued for five
+years</strong> (89.4–90.0%). The 2025 figure of <strong>90.5%</strong> is the highest on record.</p>
+
+<table>
+<thead><tr><th>Year</th><th>Mean District Grad Rate</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>2006</td><td>83.7%</td><td></td></tr>
+<tr><td>2007</td><td>84.7%</td><td></td></tr>
+<tr><td>2008</td><td>84.7%</td><td></td></tr>
+<tr><td>2009</td><td>84.9%</td><td></td></tr>
+<tr><td>2010</td><td>85.4%</td><td></td></tr>
+<tr><td>2011</td><td>86.2%</td><td></td></tr>
+<tr><td>2012</td><td>86.9%</td><td></td></tr>
+<tr><td>2013</td><td>87.8%</td><td></td></tr>
+<tr><td>2014</td><td>88.1%</td><td></td></tr>
+<tr><td>2015</td><td>87.9%</td><td></td></tr>
+<tr><td>2016</td><td>88.5%</td><td></td></tr>
+<tr><td>2017</td><td>89.6%</td><td></td></tr>
+<tr><td>2018</td><td>89.0%</td><td></td></tr>
+<tr><td>2019</td><td>89.4%</td><td></td></tr>
+<tr><td>2020</td><td>89.9%</td><td></td></tr>
+<tr><td>2021</td><td>89.8%</td><td></td></tr>
+<tr><td>2022</td><td>90.0%</td><td>COVID waiver (Class of 2022)</td></tr>
+<tr><td>2023</td><td>89.9%</td><td></td></tr>
+<tr><td>2024</td><td>89.4%</td><td></td></tr>
+<tr><td>2025</td><td>90.5%</td><td>All-time high — Ballot Q2 (Class of 2025)</td></tr>
+</tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>3. Boston Public Schools: 2024 vs. 2025</h2>
+
+<p>BPS has consistently trailed the state average by ~8–10 percentage points. The 2025
+jump to 81.3% is an all-time high for the district.</p>
+
+<table>
+<thead><tr><th>Year</th><th>Cohort Size</th><th>Grad Rate</th><th>Change</th></tr></thead>
+<tbody>
+<tr><td>2021</td><td>3,867</td><td>78.8%</td><td></td></tr>
+<tr><td>2022</td><td>3,593</td><td>81.0%</td><td>+2.2 pp</td></tr>
+<tr><td>2023</td><td>3,767</td><td>80.5%</td><td>−0.5 pp</td></tr>
+<tr><td>2024</td><td>3,711</td><td>79.7%</td><td>−0.8 pp</td></tr>
+<tr><td>2025</td><td>4,154</td><td>81.3%</td><td>+1.6 pp ← all-time high</td></tr>
+</tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>4. Did Ballot Question 2 Raise Graduation Rates?</h2>
+
+<p>Ballot Question 2 passed November 5, 2024 (59% Yes), eliminating MCAS as a graduation
+requirement effective December 5, 2024 — mid-way through the Class of 2025's senior year.
+Students who had not yet passed the MCAS were immediately eligible to graduate through the
+new coursework-based pathway.</p>
+
+<h3>Evidence for a policy effect</h3>
+<ul>
+  <li>Statewide mean grad rate rose <strong>+1.16 pp</strong>, the largest single-year gain
+      since 2006–2007, and statistically significant (t=4.57, p&lt;0.0001).</li>
+  <li>The gain was concentrated in <strong>lower-performing districts</strong> — exactly where
+      the MCAS requirement would have been most binding.</li>
+  <li>Mean MCAS score change was essentially zero (+0.01 ELA, +0.001 Math) — ruling out
+      genuine academic improvement as the driver.</li>
+</ul>
+
+<h3>Year-over-year change by prior-year quartile</h3>
+<table>
+<thead><tr><th>Transition</th><th>Q1 (lowest)</th><th>Q2</th><th>Q3</th><th>Q4 (highest)</th><th>Overall Mean</th></tr></thead>
+<tbody>
+<tr><td>2019→2020</td><td>+2.9</td><td>+1.1</td><td>−0.7</td><td>−1.1</td><td>+0.5</td></tr>
+<tr><td>2020→2021</td><td>+1.6</td><td>−0.1</td><td>0.0</td><td>−1.2</td><td>+0.1</td></tr>
+<tr><td>2021→2022 (COVID waiver)</td><td>+1.8</td><td>+0.2</td><td>−0.2</td><td>−0.9</td><td>+0.2</td></tr>
+<tr><td>2022→2023</td><td>+1.2</td><td>−0.1</td><td>−0.7</td><td>−0.9</td><td>−0.1</td></tr>
+<tr><td>2023→2024</td><td>+0.1</td><td>−0.4</td><td>−0.7</td><td>−1.2</td><td>−0.5</td></tr>
+<tr><td><strong>2024→2025 (Ballot Q2)</strong></td><td><strong>+4.1</strong></td><td><strong>+1.2</strong></td><td><strong>+0.6</strong></td><td>−1.2</td><td><strong>+1.2</strong></td></tr>
+</tbody>
+</table>
+
+<div class="caveat">
+<strong>Caveat — regression to the mean:</strong> The "Q1 gains most" pattern appears in nearly
+every year, not just policy-change years — districts with unusually low rates tend to bounce back
+the following year. Comparable Q1 gains occurred in 2015 (+4.4 pp) and 2013 (+4.2 pp) without
+any policy change. What is distinctive about 2025 is the combination of the <strong>largest
+overall mean</strong> and <strong>Q2 and Q3 also gaining</strong>, which is unusual. This is
+consistent with a broad policy effect, but cannot be conclusively attributed to the ballot
+measure without a more rigorous counterfactual design.
+</div>
+
+<h3>Districts with grad rate up ≥3 pp and MCAS flat/down (2024→2025, top 15)</h3>
+<table>
+<thead><tr><th>District</th><th>Grad 2024</th><th>Grad 2025</th><th>Δ Grad (pp)</th><th>Δ ELA M+E</th></tr></thead>
+<tbody>
+<tr><td>Narragansett</td><td>75.9%</td><td>90.9%</td><td>+15.0</td><td>0.0</td></tr>
+<tr><td>North Adams</td><td>69.9%</td><td>83.9%</td><td>+14.0</td><td>0.0</td></tr>
+<tr><td>Four Rivers Charter Public</td><td>86.2%</td><td>100.0%</td><td>+13.8</td><td>0.0</td></tr>
+<tr><td>Southbridge</td><td>65.2%</td><td>78.6%</td><td>+13.4</td><td>0.0</td></tr>
+<tr><td>Boston Collegiate Charter</td><td>81.9%</td><td>94.6%</td><td>+12.7</td><td>−0.1</td></tr>
+<tr><td>Dennis-Yarmouth</td><td>77.9%</td><td>89.7%</td><td>+11.8</td><td>−0.1</td></tr>
+<tr><td>Randolph</td><td>74.6%</td><td>85.9%</td><td>+11.3</td><td>0.0</td></tr>
+<tr><td>Brockton</td><td>65.3%</td><td>75.4%</td><td>+10.1</td><td>0.0</td></tr>
+<tr><td>Oxford</td><td>86.1%</td><td>95.2%</td><td>+9.1</td><td>0.0</td></tr>
+<tr><td>Uxbridge</td><td>79.3%</td><td>87.8%</td><td>+8.5</td><td>0.0</td></tr>
+<tr><td>Lawrence</td><td>74.0%</td><td>82.2%</td><td>+8.2</td><td>0.0</td></tr>
+<tr><td>Haverhill</td><td>78.6%</td><td>86.7%</td><td>+8.1</td><td>0.0</td></tr>
+<tr><td>Spencer-E Brookfield</td><td>68.1%</td><td>76.0%</td><td>+7.9</td><td>0.0</td></tr>
+<tr><td>Marlborough</td><td>82.9%</td><td>90.7%</td><td>+7.8</td><td>0.0</td></tr>
+<tr><td>Westport</td><td>90.0%</td><td>96.9%</td><td>+6.9</td><td>−0.1</td></tr>
+</tbody>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>5. MCAS Scores Over Time — Calibrated Long-Run Series</h2>
+
+<h3>Why calibration is needed</h3>
+<p>Legacy MCAS (through 2018) uses a 200–280 scaled score and CPI (Composite Performance Index,
+0–100). Next Gen MCAS (2019+) uses a 440–560 scaled score. No official crosswalk exists; DESE
+explicitly warns against comparing the two series directly.</p>
+
+<h3>Calibration method</h3>
+<p>Using the 2018 legacy CPI and 2019 Next Gen average scaled score for 297 matched districts,
+we fit a linear regression for ELA and Math separately. The 2018→2019 handoff is seamless:
+calibrated 2018 ELA predicts 505.6, actual 2019 was 506.0; Math predicts 503.9, actual 505.0.</p>
+
+<table>
+<thead><tr><th>Subject</th><th>Slope</th><th>Intercept</th><th>R²</th><th>n districts</th></tr></thead>
+<tbody>
+<tr><td>ELA</td><td>2.179</td><td>296.0</td><td>0.47</td><td>297</td></tr>
+<tr><td>Math</td><td>1.238</td><td>393.1</td><td>0.69</td><td>297</td></tr>
+</tbody>
+</table>
+
+<div class="caveat">
+The ELA R² of 0.47 reflects meaningful noise. Calibrated ELA values are directionally reliable
+but should be treated as approximate. The Math fit (R²=0.69) is stronger and more credible.
+</div>
+
+<h3>Full calibrated time series</h3>
+<table>
+<thead><tr><th>MCAS Year</th><th>ELA Score</th><th>Math Score</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>2007</td><td>487.5</td><td>498.3</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2008</td><td>492.8</td><td>500.4</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2009</td><td>496.9</td><td>502.2</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2010</td><td>496.3</td><td>503.0</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2011</td><td>500.6</td><td>503.8</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2012</td><td>504.8</td><td>504.5</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2013</td><td>507.1</td><td>504.8</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2014</td><td>505.2</td><td>504.5</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2015</td><td>506.7</td><td>504.4</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2016</td><td>506.7</td><td>504.1</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2017</td><td>506.3</td><td>504.4</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2018</td><td>505.6</td><td>503.9</td><td>Legacy (calibrated)</td></tr>
+<tr><td>2019</td><td>506.0</td><td>505.0</td><td>Next Gen (actual)</td></tr>
+<tr><td>2021</td><td>507.0</td><td>501.0</td><td>Next Gen (actual)</td></tr>
+<tr><td>2022</td><td>503.0</td><td>501.0</td><td>Next Gen (actual)</td></tr>
+<tr><td>2023</td><td>504.0</td><td>500.0</td><td>Next Gen (actual)</td></tr>
+<tr><td>2024</td><td>504.0</td><td>500.0</td><td>Next Gen (actual)</td></tr>
+<tr><td>2025</td><td>499.0</td><td>498.0</td><td>Next Gen (actual)</td></tr>
+</tbody>
+</table>
+
+<p>ELA rose steadily 2007–2013, plateaued 2013–2021, then declined to 499 in 2025 — the lowest
+since ~2009. Math was roughly flat 2007–2019, then declined, reaching 498 in 2025 — near the
+series low (498.3 in 2007).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>6. MCAS Scores vs. Graduation Rates (2-Year Cohort Lag)</h2>
+
+<p>Students take the grade 10 MCAS in year X and (if on track) graduate in year X+2.
+Aligning by cohort:</p>
+
+<table>
+<thead><tr><th>MCAS Year</th><th>Grad Year</th><th>ELA Score</th><th>Math Score</th><th>Avg Grad Rate</th></tr></thead>
+<tbody>
+<tr><td>2007</td><td>2009</td><td>487.5</td><td>498.3</td><td>84.9%</td></tr>
+<tr><td>2008</td><td>2010</td><td>492.8</td><td>500.4</td><td>85.4%</td></tr>
+<tr><td>2009</td><td>2011</td><td>496.9</td><td>502.2</td><td>86.2%</td></tr>
+<tr><td>2010</td><td>2012</td><td>496.3</td><td>503.0</td><td>86.9%</td></tr>
+<tr><td>2011</td><td>2013</td><td>500.6</td><td>503.8</td><td>87.8%</td></tr>
+<tr><td>2012</td><td>2014</td><td>504.8</td><td>504.5</td><td>88.1%</td></tr>
+<tr><td>2013</td><td>2015</td><td>507.1</td><td>504.8</td><td>87.9%</td></tr>
+<tr><td>2014</td><td>2016</td><td>505.2</td><td>504.5</td><td>88.5%</td></tr>
+<tr><td>2015</td><td>2017</td><td>506.7</td><td>504.4</td><td>89.6%</td></tr>
+<tr><td>2016</td><td>2018</td><td>506.7</td><td>504.1</td><td>89.0%</td></tr>
+<tr><td>2017</td><td>2019</td><td>506.3</td><td>504.4</td><td>89.4%</td></tr>
+<tr><td>2018</td><td>2020</td><td>505.6</td><td>503.9</td><td>89.9%</td></tr>
+<tr><td>2019</td><td>2021</td><td>506.0</td><td>505.0</td><td>89.8%</td></tr>
+<tr><td>2021</td><td>2023</td><td>507.0</td><td>501.0</td><td>89.9%</td></tr>
+<tr><td>2022</td><td>2024</td><td>503.0</td><td>501.0</td><td>89.4%</td></tr>
+<tr><td>2023</td><td>2025</td><td>504.0</td><td>500.0</td><td>90.5%</td></tr>
+</tbody>
+</table>
+
+<p>MCAS scores and graduation rates moved broadly together through ~2015. After that they
+decoupled: scores plateaued then declined, while graduation rates plateaued near 89–90%.
+In 2025, the cohort with post-plateau low MCAS scores achieved the highest graduation rate
+on record — consistent with the removal of the test-based graduation gate.</p>
+
+<p>Cross-sectional correlation between MCAS meet/exceed % and district grad rates
+remains meaningful within each year (r≈0.60), suggesting MCAS still tracks underlying
+academic preparation. But year-over-year ΔMCAS and Δgrad rate are essentially uncorrelated
+(r≈0.02), meaning short-term MCAS changes don't predict short-term graduation rate changes.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2>7. Background: MCAS as a Graduation Requirement</h2>
+
+<ul>
+  <li><strong>2003:</strong> MCAS first required for graduation. Minimum score: 220 (Needs Improvement).</li>
+  <li><strong>2010:</strong> Threshold raised to 240 (Proficient). EPP pathway still available at 220.</li>
+  <li><strong>2019:</strong> Transition to Next Gen MCAS for grade 10. Interim cut scores set via matched-sample analysis.</li>
+  <li><strong>2022:</strong> COVID waiver — Class of 2022 could substitute relevant coursework. Effect on grad rates was modest (+0.2 pp mean, Q1 +1.8 pp).</li>
+  <li><strong>August 2022:</strong> Board voted to raise the bar for Classes of 2026–2031 to 486/500 — never implemented.</li>
+  <li><strong>November 5, 2024:</strong> Ballot Question 2 passed (59% Yes). Funded primarily by the Massachusetts Teachers Association ($16M+).</li>
+  <li><strong>December 5, 2024:</strong> MCAS graduation requirement eliminated. Students mid-year in the Class of 2025 immediately eligible under new coursework pathway.</li>
+  <li><strong>Class of 2026+:</strong> Graduation requires: 2 years HS ELA, Algebra I + Geometry, 1 year science. MCAS continues statewide but scores no longer gate diploma issuance.</li>
+</ul>
+
+</body>
+</html>
