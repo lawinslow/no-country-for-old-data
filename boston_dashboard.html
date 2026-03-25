@@ -313,8 +313,7 @@ function renderScatter(schools, xKey, yKey) {
     if (t < xMin || t > xMax) return;
     const x = sx(t);
     svg.innerHTML += `<line x1="${x}" y1="${pad.top}" x2="${x}" y2="${pad.top+ph}" stroke="#eee" stroke-width="1"/>`;
-    const isPctX = xKey.includes('pct') || xKey.includes('me_pct');
-    const label = isPctX ? (t*100).toFixed(0)+'%' : t.toFixed(0);
+    const label = xKey.includes('me_pct') ? (t*100).toFixed(0)+'%' : xKey.includes('pct_') ? t.toFixed(0)+'%' : t.toFixed(0);
     svg.innerHTML += `<text x="${x}" y="${h-5}" text-anchor="middle" font-size="10" fill="#999">${label}</text>`;
   });
 
@@ -322,8 +321,7 @@ function renderScatter(schools, xKey, yKey) {
     if (t < yMin || t > yMax) return;
     const y = sy(t);
     svg.innerHTML += `<line x1="${pad.left}" y1="${y}" x2="${pad.left+pw}" y2="${y}" stroke="#eee" stroke-width="1"/>`;
-    const isPctY = yKey.includes('pct') || yKey.includes('me_pct');
-    const label = isPctY ? (t*100).toFixed(0)+'%' : t.toFixed(0);
+    const label = yKey.includes('me_pct') ? (t*100).toFixed(0)+'%' : yKey.includes('pct_') ? t.toFixed(0)+'%' : t.toFixed(0);
     svg.innerHTML += `<text x="${pad.left-6}" y="${y+3}" text-anchor="end" font-size="10" fill="#999">${label}</text>`;
   });
 
