@@ -26,8 +26,8 @@ ul li { margin: .35em 0; }
 .byline { color: #666; font-style: italic; font-size: .95em; margin-top: -.3em; }
 
 /* Waterfall chart */
-.waterfall { margin: 1.5em 0; overflow-x: auto; }
-.waterfall svg { display: block; margin: 0 auto; }
+.waterfall { margin: 1.5em 0; }
+.waterfall canvas { display: block; max-width: 100%; }
 
 /* back link */
 .back { font-size: .85em; margin-bottom: 1.5em; }
@@ -93,75 +93,123 @@ ul li { margin: .35em 0; }
 <p>The $5.7M increase breaks down as follows. Health insurance (~+$2.2M school share) sits in a separate town-wide line and is not included in the $151.7M school budget, so the true cost pressure is larger than it appears.</p>
 
 <div class="waterfall">
-<svg width="820" height="320" font-family="Georgia, serif" font-size="13">
-  <!-- y-axis label -->
-  <text x="8" y="160" text-anchor="middle" transform="rotate(-90,8,160)" fill="#666" font-size="11">$ millions change from FY2026 base</text>
-
-  <!-- baseline -->
-  <line x1="60" y1="260" x2="800" y2="260" stroke="#ccc" stroke-width="1"/>
-
-  <!-- zero line label -->
-  <text x="54" y="264" text-anchor="end" fill="#999" font-size="11">$0</text>
-
-  <!-- bars: each bar is a cost driver -->
-  <!-- Salary step+COLA Unit A: +2.83M  -->
-  <!-- bar x, bar top-y, height, color -->
-  <!-- scale: 1M = 40px; 0 = y260 -->
-
-  <!-- Unit A Salaries +2.83M -->
-  <rect x="80"  y="147" width="60" height="113" fill="#1a5c2a" opacity=".85"/>
-  <text x="110" y="142" text-anchor="middle" fill="#1a5c2a" font-weight="bold">+$2.83M</text>
-  <text x="110" y="280" text-anchor="middle" fill="#444" font-size="11">Unit A</text>
-  <text x="110" y="292" text-anchor="middle" fill="#444" font-size="11">Salaries</text>
-
-  <!-- Unit C Inst Assts +0.73M -->
-  <rect x="160" y="231" width="60" height="29" fill="#1a5c2a" opacity=".85"/>
-  <text x="190" y="226" text-anchor="middle" fill="#1a5c2a" font-weight="bold">+$0.73M</text>
-  <text x="190" y="280" text-anchor="middle" fill="#444" font-size="11">Unit C</text>
-  <text x="190" y="292" text-anchor="middle" fill="#444" font-size="11">Inst. Assts</text>
-
-  <!-- Other salaries +0.78M (coaches, subs, admins net) -->
-  <rect x="240" y="229" width="60" height="31" fill="#1a5c2a" opacity=".85"/>
-  <text x="270" y="224" text-anchor="middle" fill="#1a5c2a" font-weight="bold">+$0.78M</text>
-  <text x="270" y="280" text-anchor="middle" fill="#444" font-size="11">Other</text>
-  <text x="270" y="292" text-anchor="middle" fill="#444" font-size="11">Salaries</text>
-
-  <!-- SpEd OOD Tuition +0.83M -->
-  <rect x="320" y="227" width="60" height="33" fill="#e67e22" opacity=".85"/>
-  <text x="350" y="222" text-anchor="middle" fill="#c0392b" font-weight="bold">+$0.83M</text>
-  <text x="350" y="280" text-anchor="middle" fill="#444" font-size="11">SpEd</text>
-  <text x="350" y="292" text-anchor="middle" fill="#444" font-size="11">OOD Tuition</text>
-
-  <!-- Transportation +0.37M -->
-  <rect x="400" y="245" width="60" height="15" fill="#e67e22" opacity=".85"/>
-  <text x="430" y="240" text-anchor="middle" fill="#c0392b" font-weight="bold">+$0.37M</text>
-  <text x="430" y="280" text-anchor="middle" fill="#444" font-size="11">Trans-</text>
-  <text x="430" y="292" text-anchor="middle" fill="#444" font-size="11">portation</text>
-
-  <!-- Other expenses +0.15M -->
-  <rect x="480" y="254" width="60" height="6" fill="#e67e22" opacity=".85"/>
-  <text x="510" y="249" text-anchor="middle" fill="#c0392b" font-weight="bold">+$0.15M</text>
-  <text x="510" y="280" text-anchor="middle" fill="#444" font-size="11">Other</text>
-  <text x="510" y="292" text-anchor="middle" fill="#444" font-size="11">Expenses</text>
-
-  <!-- Unit D savings -0.20M -->
-  <rect x="560" y="260" width="60" height="8" fill="#c0392b" opacity=".75"/>
-  <text x="590" y="277" text-anchor="middle" fill="#c0392b" font-weight="bold">−$0.20M</text>
-  <text x="590" y="290" text-anchor="middle" fill="#444" font-size="11">Unit D</text>
-  <text x="590" y="302" text-anchor="middle" fill="#444" font-size="11">Savings</text>
-
-  <!-- Total bar: +5.70M -->
-  <rect x="700" y="32" width="70" height="228" fill="#1a5c2a" opacity=".5" stroke="#1a5c2a" stroke-width="1.5" stroke-dasharray="4,2"/>
-  <text x="735" y="27" text-anchor="middle" fill="#1a5c2a" font-weight="bold" font-size="14">+$5.70M</text>
-  <text x="735" y="280" text-anchor="middle" fill="#444" font-size="11">Total</text>
-  <text x="735" y="292" text-anchor="middle" fill="#444" font-size="11">Increase</text>
-
-  <!-- Health insurance note (out of scope) -->
-  <text x="640" y="110" fill="#888" font-size="11" text-anchor="middle">Health ins. (+$2.2M</text>
-  <text x="640" y="123" fill="#888" font-size="11" text-anchor="middle">school share) billed</text>
-  <text x="640" y="136" fill="#888" font-size="11" text-anchor="middle">separately — not shown</text>
-</svg>
+<canvas id="waterfallChart" height="110"></canvas>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+  // All values in $M
+  // Segments: [floatBase, value, label, color, changeLabel]
+  // FY2026 base: $146.033M
+  // Changes that sum to +$5.696M -> FY2027: $151.729M
+  const BASE   = 146.033;
+  const TOTAL  = 151.729;
+
+  const segments = [
+    { label: 'FY2026 Base',         value: BASE,   change: null,     color: '#1a5c2a' },
+    { label: 'Unit A\nSalaries',    value: 2.830,  change: '+$2.83M', color: '#2e7d52' },
+    { label: 'Unit C\nInst. Assts', value: 0.735,  change: '+$0.74M', color: '#2e7d52' },
+    { label: 'Other\nSalaries',     value: 0.776,  change: '+$0.78M', color: '#2e7d52' },
+    { label: 'SpEd OOD\nTuition',   value: 0.835,  change: '+$0.84M', color: '#e67e22' },
+    { label: 'Trans-\nportation',   value: 0.371,  change: '+$0.37M', color: '#e67e22' },
+    { label: 'Other\nExpenses',     value: 0.149,  change: '+$0.15M', color: '#e67e22' },
+    { label: 'FY2027 Total',        value: TOTAL,  change: null,     color: '#1a5c2a' },
+  ];
+
+  // Build floating bar data: [bottom, top] for each bar
+  // Base and Total are grounded at y_min for visual clarity
+  const Y_MIN = 143.5;
+  const floatData = [];
+  let running = BASE;
+
+  segments.forEach((seg, i) => {
+    if (i === 0) {
+      floatData.push([Y_MIN, BASE]);
+    } else if (i === segments.length - 1) {
+      floatData.push([Y_MIN, TOTAL]);
+    } else {
+      floatData.push([running, running + seg.value]);
+      running += seg.value;
+    }
+  });
+
+  const colors = segments.map(s => s.color);
+  const labels = segments.map(s => s.label.split('\n'));
+
+  new Chart(document.getElementById('waterfallChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: floatData,
+        backgroundColor: colors,
+        borderColor: colors,
+        borderWidth: 1,
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => segments[items[0].dataIndex].label.replace('\n', ' '),
+            label: (item) => {
+              const seg = segments[item.dataIndex];
+              if (seg.change) return `Change: ${seg.change}`;
+              return `Total: $${seg.value.toFixed(1)}M`;
+            }
+          }
+        },
+        // Value labels above each bar
+        datalabels: false,
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'Georgia, serif', size: 12 } }
+        },
+        y: {
+          min: Y_MIN,
+          max: 153.5,
+          ticks: {
+            font: { family: 'Georgia, serif', size: 12 },
+            callback: (v) => '$' + v.toFixed(0) + 'M'
+          },
+          grid: { color: '#eee' },
+          title: {
+            display: true,
+            text: '$ millions',
+            font: { family: 'Georgia, serif', size: 12 },
+            color: '#666'
+          }
+        }
+      }
+    },
+    plugins: [{
+      // Draw value labels above/inside bars
+      id: 'valueLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        chart.getDatasetMeta(0).data.forEach((bar, i) => {
+          const seg = segments[i];
+          const label = seg.change || (i === 0 ? '$146.0M' : '$151.7M');
+          ctx.save();
+          ctx.font = 'bold 12px Georgia, serif';
+          ctx.fillStyle = '#333';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+          const x = bar.x;
+          const y = Math.min(bar.y, bar.base) - 4;
+          ctx.fillText(label, x, y);
+          ctx.restore();
+        });
+      }
+    }]
+  });
+})();
+</script>
 
 <div class="caveat">
 <strong>Health insurance caveat:</strong> The district's ~$2.2M share of the town-wide health insurance increase (+9%, driven by Group Insurance Commission premiums) is budgeted in Shared Expenses and does not appear in the $151.7M school budget line. The true cost pressure on the school system is roughly $7.9M, not $5.7M.
