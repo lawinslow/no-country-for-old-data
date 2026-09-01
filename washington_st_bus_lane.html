@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Roslindale Bus Lane — Does It Actually Work?</title>
+<style>
+body { font-family: Georgia, serif; max-width: 960px; margin: 40px auto; padding: 0 24px; color: #222; line-height: 1.7; background: #fafaf8; }
+h1 { color: #1a5c2a; border-bottom: 3px solid #1a5c2a; padding-bottom: 8px; }
+h2 { color: #1a5c2a; margin-top: 2.2em; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+h3 { color: #333; margin-top: 1.4em; }
+p { margin: .7em 0; }
+.note   { background: #f0f8f2; border-left: 4px solid #1a5c2a; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+.caveat { background: #fff8e1; border-left: 4px solid #f0a500; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+.sources { background: #f5f5f5; border-left: 4px solid #aaa; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .85em; }
+table { border-collapse: collapse; width: 100%; font-size: .83em; margin: 1em 0; }
+th { background: #1a5c2a; color: #fff; padding: 7px 8px; text-align: center; }
+th:first-child { text-align: left; }
+td { padding: 5px 8px; border-bottom: 1px solid #ddd; text-align: center; }
+td:first-child { text-align: left; }
+tr:nth-child(even) td { background: #f4faf6; }
+td small { color: #777; }
+.hi  { color: #1a5c2a; font-weight: bold; }
+.lo  { color: #c0392b; }
+.neg { color: #c0392b; }
+.pos { color: #1a5c2a; }
+ul li { margin: .35em 0; }
+.byline { color: #666; font-style: italic; font-size: .95em; margin-top: -.3em; }
+figure { margin: 1.6em 0; }
+figcaption { font-size: .82em; color: #777; margin-top: .5em; line-height: 1.55; }
+pre { background: #f5f5f5; border-left: 4px solid #aaa; padding: 12px 16px; overflow-x: auto; font-size: .78em; line-height: 1.5; }
+.back { font-size: .85em; margin-bottom: 1.5em; }
+.back a { color: #1a5c2a; }
+.tablewrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<div class="back"><a href="index.html">← No Country for Old Data</a></div>
+
+<h1>The Roslindale Bus Lane — Does It Actually Work?</h1>
+<p class="byline">August 2026 &middot; Data: MBTA Bus Arrival/Departure Times 2020–2026, MBTA ridership archive, City of Boston</p>
+
+<div class="note">
+<strong>Summary:</strong> Washington Street in Roslindale has had a bus lane since 2018. Nobody has published a number for whether it still works. Using 1,695,706 observed segment traversals from the MBTA's own archive: the morning lane is the best-performing window on the corridor, and it has lost <strong>a quarter of its speed since 2022</strong>. The afternoon is worse and largely unprotected — the single worst hour, 4pm inbound, has no lane at any hour, and <strong>two-thirds of that peak is the school year</strong>. The outbound lane demonstrably worked when it was painted in 2021 and has since given back about half of the gain. None of this is a paint problem. It is an enforcement problem.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>1. The question nobody was answering</h2>
+
+<p>Boston is good at announcing bus lanes and bad at checking on them afterwards. The Washington Street lane in Roslindale went in as a four-week pilot in May 2018 and became permanent that June. An outbound afternoon lane followed in April 2021, and the inbound lane was extended south from Albano Street to Poplar Street in spring 2023.</p>
+
+<p>The City published a snapshot of the corridor in July 2025 reporting the lanes as a large success — inbound trip time "cut nearly in half." That is measured against a <em>pre-2018</em> baseline, when riders faced 10 to 15 minutes of delay and no lane existed, and there is no reason to doubt it. But it carries no trend line for the years since. The obvious question — <em>is it still working?</em> — has no published answer.</p>
+
+<p>It turns out the MBTA hands you everything you need to answer it.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>2. What the data actually is</h2>
+
+<p>The MBTA publishes a Bus Arrival/Departure Times archive: one CSV per month, about 2.5 million rows each, going back to January 2020. Each row is one bus at one scheduling checkpoint, with a scheduled time and an actual time. Here is a single route 34 run from Dedham Mall to Forest Hills on a Wednesday lunchtime:</p>
+
+<pre>tp  code   stop                              scheduled  actual     late by
+1   dmall  Dedham Mall                       12:01:00   12:04:26   +3:26
+2   stims  Washington St @ Stimson St        12:06:00   12:10:48   +4:48
+3   wawbw  Washington St @ W Boundary Rd     12:08:00   12:14:53   +6:53
+4   walag  Washington St @ Enneking Pkwy     12:10:00   12:17:15   +7:15
+5   wamet  Washington St @ Metropolitan Ave  12:15:00   12:23:06   +8:06
+6   rossq  Washington St @ Cummins Hwy       12:19:00   12:25:34   +6:34
+7   fhill  Forest Hills                      12:24:00   12:30:47   +6:47</pre>
+
+<p>The measurement is just subtraction. Cummins Hwy minus Metropolitan Ave is 2 minutes 28 seconds. Forest Hills minus Cummins Hwy is 5 minutes 13 seconds. Everything below is 1.7 million of those subtractions, grouped different ways.</p>
+
+<p>Note what the subtraction throws away. That bus was already <strong>eight minutes late</strong> when it reached Metropolitan Ave. The segment time does not care. Lateness is inherited from upstream; the 2 minutes 28 is what <em>this quarter mile of street</em> did. That is why none of what follows uses the schedule as a yardstick — the schedule tells you about the schedule, not the road.</p>
+
+<div class="caveat">
+<strong>The one real limitation:</strong> the archive records <em>checkpoints</em>, not every stop. Route 34 serves about thirty stops and logs seven. So you can measure a half-mile block precisely, but you cannot see inside it.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>3. The morning works. The afternoon is broken.</h2>
+
+<p>The lane only operates during peak windows, which means every other hour is an untreated control on the same asphalt. That makes the corridor its own experiment.</p>
+
+<figure>
+<svg viewBox="0 0 900 330" width="100%" role="img" aria-label="Run time by hour of day, Roslindale Square to Forest Hills">
+<rect x="46.0" y="24" width="195.6" height="260" fill="#e8f0e9"/>
+<text x="143.8" y="37.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5b7f63" font-weight="400">inbound lane 5–10am</text>
+<rect x="398.0" y="24" width="195.6" height="260" fill="#e8f0e9"/>
+<text x="495.8" y="37.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#5b7f63" font-weight="400">outbound lane 2–7pm</text>
+<line x1="46" x2="750" y1="219.0" y2="219.0" stroke="#ddd"/>
+<text x="38.0" y="223.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">3</text>
+<line x1="46" x2="750" y1="154.0" y2="154.0" stroke="#ddd"/>
+<text x="38.0" y="158.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6</text>
+<line x1="46" x2="750" y1="89.0" y2="89.0" stroke="#ddd"/>
+<text x="38.0" y="93.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">9</text>
+<line x1="46" x2="750" y1="24.0" y2="24.0" stroke="#ddd"/>
+<text x="38.0" y="28.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">12</text>
+<text x="85.1" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6am</text>
+<text x="202.4" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">9am</text>
+<text x="319.8" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">noon</text>
+<text x="437.1" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">3pm</text>
+<text x="554.4" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6pm</text>
+<text x="671.8" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">9pm</text>
+<text x="398.0" y="322.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">hour of day</text>
+<text x="38.0" y="18.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">min</text>
+<polyline points="46.0,212.1 85.1,187.1 124.2,176.7 163.3,171.3 202.4,178.3 241.6,187.1 280.7,186.5 319.8,181.7 358.9,181.7 398.0,175.2 437.1,157.2 476.2,128.0 515.3,155.5 554.4,175.7 593.6,193.0 632.7,195.2 671.8,200.6 710.9,202.3 750.0,208.6" fill="none" stroke="#1a5c2a" stroke-width="2.5"/>
+<polyline points="46.0,191.3 85.1,121.9 124.2,136.0 163.3,127.3 202.4,146.4 241.6,156.8 280.7,157.9 319.8,152.9 358.9,152.5 398.0,142.3 437.1,114.4 476.2,52.6 515.3,99.4 554.4,140.6 593.6,166.4 632.7,168.1 671.8,176.1 710.9,178.9 750.0,185.0" fill="none" stroke="#1a5c2a" stroke-width="1.2" stroke-dasharray="4 3" opacity=".75"/>
+<text x="758.0" y="212.6" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#1a5c2a" font-weight="700">Inbound → Forest Hills</text>
+<text x="758.0" y="226.6" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">solid median · dashed 90th</text>
+<polyline points="46.0,223.3 85.1,197.8 124.2,182.8 163.3,173.5 202.4,167.0 241.6,177.2 280.7,173.5 319.8,169.8 358.9,170.7 398.0,168.1 437.1,151.8 476.2,141.0 515.3,155.7 554.4,171.8 593.6,173.9 632.7,179.3 671.8,184.8 710.9,187.1 750.0,189.8" fill="none" stroke="#2a6f97" stroke-width="2.5"/>
+<polyline points="46.0,206.0 85.1,174.6 124.2,150.8 163.3,141.4 202.4,127.3 241.6,149.7 280.7,146.0 319.8,138.8 358.9,141.0 398.0,136.0 437.1,108.9 476.2,89.0 515.3,114.4 554.4,138.8 593.6,145.3 632.7,153.3 671.8,159.0 710.9,159.8 750.0,165.9" fill="none" stroke="#2a6f97" stroke-width="1.2" stroke-dasharray="4 3" opacity=".75"/>
+<text x="758.0" y="193.8" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#2a6f97" font-weight="700">Outbound → Rozzie Sq</text>
+<text x="758.0" y="207.8" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">solid median · dashed 90th</text>
+<circle cx="476.2" cy="52.6" r="4" fill="#c0392b"/>
+<text x="476.2" y="42.6" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#c0392b" font-weight="700">10.68 min at 4pm</text>
+</svg>
+<figcaption>Weekday run time between Roslindale Square and Forest Hills, by hour, 2025–26. Solid lines are the median trip; dashed are the 90th percentile. Shaded bands mark the hours each lane is legally in force. The worst hour of the day is 4pm inbound — outside the inbound lane window entirely.</figcaption>
+</figure>
+
+<p>Between 7 and 10am, inbound buses lose about <strong>1.7 minutes</strong> against the corridor's own free-flow speed. That is real congestion, but it is the best window on the street.</p>
+
+<p>The afternoon is a different road. At 4pm inbound — when there is no lane in that direction at any hour — the same segment takes a median of <strong>7.2 minutes</strong> against a free-flow of 3.3, and one trip in ten takes <strong>10.7 minutes or worse</strong>. Outbound in the afternoon, where a lane <em>is</em> in force, 88% of trips still run more than two minutes over free-flow. A lane that fails nine trips in ten is not being kept clear.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>4. Block by block, against walking</h2>
+
+<p>Segment averages hide things. Breaking the corridor into every consecutive pair of checkpoints, and setting each against how long the same block takes to <em>walk</em>, changes which problems look urgent.</p>
+
+<figure>
+<svg viewBox="0 0 900 620" width="100%" role="img" aria-label="Run time per block against walking time, AM and PM peak">
+<text x="46.0" y="18.0" text-anchor="start" font-family="Georgia,serif" font-size="12" fill="#222" font-weight="700">AM peak · 7–10am</text>
+<line x1="46" x2="884" y1="266.0" y2="266.0" stroke="#ddd"/>
+<text x="38.0" y="270.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">0</text>
+<line x1="46" x2="884" y1="226.0" y2="226.0" stroke="#ddd"/>
+<text x="38.0" y="230.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">4</text>
+<line x1="46" x2="884" y1="186.0" y2="186.0" stroke="#ddd"/>
+<text x="38.0" y="190.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">8</text>
+<line x1="46" x2="884" y1="146.0" y2="146.0" stroke="#ddd"/>
+<text x="38.0" y="150.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">12</text>
+<line x1="46" x2="884" y1="106.0" y2="106.0" stroke="#ddd"/>
+<text x="38.0" y="110.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">16</text>
+<line x1="46" x2="884" y1="66.0" y2="66.0" stroke="#ddd"/>
+<text x="38.0" y="70.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">20</text>
+<line x1="46" x2="884" y1="26.0" y2="26.0" stroke="#ddd"/>
+<text x="38.0" y="30.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">24</text>
+<rect x="77.5" y="203.0" width="36.3" height="63.0" fill="#1a5c2a" rx="2"/>
+<line x1="95.7" x2="95.7" y1="203.0" y2="186.0" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="91.7" x2="99.7" y1="186.0" y2="186.0" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="95.7" y="216.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.3</text>
+<rect x="117.8" y="210.0" width="36.3" height="56.0" fill="#2a6f97" rx="2"/>
+<line x1="136.0" x2="136.0" y1="210.0" y2="199.5" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="132.0" x2="140.0" y1="199.5" y2="199.5" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="136.0" y="223.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">5.6</text>
+<line x1="51.6" x2="180.1" y1="156.0" y2="156.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="115.8" y="150.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">11 min walk</text>
+<rect x="217.2" y="236.0" width="36.3" height="30.0" fill="#1a5c2a" rx="2"/>
+<line x1="235.3" x2="235.3" y1="236.0" y2="223.0" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="231.3" x2="239.3" y1="223.0" y2="223.0" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="235.3" y="249.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">3</text>
+<rect x="257.5" y="243.0" width="36.3" height="23.0" fill="#2a6f97" rx="2"/>
+<line x1="275.7" x2="275.7" y1="243.0" y2="233.7" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="271.7" x2="279.7" y1="233.7" y2="233.7" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="275.7" y="256.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">2.3</text>
+<line x1="191.3" x2="319.7" y1="156.0" y2="156.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="255.5" y="150.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">11 min walk</text>
+<rect x="356.9" y="249.5" width="36.3" height="16.5" fill="#1a5c2a" rx="2"/>
+<line x1="375.0" x2="375.0" y1="249.5" y2="241.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="371.0" x2="379.0" y1="241.5" y2="241.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="375.0" y="262.5" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">1.65</text>
+<rect x="397.2" y="252.2" width="36.3" height="13.8" fill="#2a6f97" rx="2"/>
+<line x1="415.3" x2="415.3" y1="252.2" y2="245.0" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="411.3" x2="419.3" y1="245.0" y2="245.0" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="415.3" y="265.2" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">1.38</text>
+<line x1="330.9" x2="459.4" y1="166.0" y2="166.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="395.2" y="160.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">10 min walk</text>
+<rect x="496.5" y="211.9" width="36.3" height="54.1" fill="#1a5c2a" rx="2"/>
+<line x1="514.7" x2="514.7" y1="211.9" y2="188.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="510.7" x2="518.7" y1="188.3" y2="188.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="514.7" y="224.9" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">5.41</text>
+<rect x="536.8" y="223.3" width="36.3" height="42.7" fill="#2a6f97" rx="2"/>
+<line x1="555.0" x2="555.0" y1="223.3" y2="205.3" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="551.0" x2="559.0" y1="205.3" y2="205.3" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="555.0" y="236.3" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">4.27</text>
+<line x1="470.6" x2="599.1" y1="106.0" y2="106.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="534.8" y="100.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">16 min walk</text>
+<rect x="636.2" y="235.8" width="36.3" height="30.2" fill="#1a5c2a" rx="2"/>
+<line x1="654.3" x2="654.3" y1="235.8" y2="218.8" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="650.3" x2="658.3" y1="218.8" y2="218.8" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="654.3" y="248.8" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">3.02</text>
+<rect x="676.5" y="243.8" width="36.3" height="22.2" fill="#2a6f97" rx="2"/>
+<line x1="694.7" x2="694.7" y1="243.8" y2="235.5" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="690.7" x2="698.7" y1="235.5" y2="235.5" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="694.7" y="256.8" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">2.22</text>
+<line x1="610.3" x2="738.7" y1="166.0" y2="166.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="674.5" y="160.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">10 min walk</text>
+<rect x="775.9" y="215.8" width="36.3" height="50.2" fill="#1a5c2a" rx="2"/>
+<line x1="794.0" x2="794.0" y1="215.8" y2="198.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="790.0" x2="798.0" y1="198.3" y2="198.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="794.0" y="228.8" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">5.02</text>
+<rect x="816.2" y="215.0" width="36.3" height="51.0" fill="#2a6f97" rx="2"/>
+<line x1="834.3" x2="834.3" y1="215.0" y2="198.2" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="830.3" x2="838.3" y1="198.2" y2="198.2" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="834.3" y="228.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">5.1</text>
+<line x1="749.9" x2="878.4" y1="36.0" y2="36.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="814.2" y="30.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">23 min walk</text>
+<line x1="46" x2="884" y1="266" y2="266" stroke="#bbb"/>
+<text x="46.0" y="302.0" text-anchor="start" font-family="Georgia,serif" font-size="12" fill="#222" font-weight="700">PM peak · 3–6pm</text>
+<line x1="46" x2="884" y1="550.0" y2="550.0" stroke="#ddd"/>
+<text x="38.0" y="554.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">0</text>
+<line x1="46" x2="884" y1="510.0" y2="510.0" stroke="#ddd"/>
+<text x="38.0" y="514.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">4</text>
+<line x1="46" x2="884" y1="470.0" y2="470.0" stroke="#ddd"/>
+<text x="38.0" y="474.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">8</text>
+<line x1="46" x2="884" y1="430.0" y2="430.0" stroke="#ddd"/>
+<text x="38.0" y="434.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">12</text>
+<line x1="46" x2="884" y1="390.0" y2="390.0" stroke="#ddd"/>
+<text x="38.0" y="394.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">16</text>
+<line x1="46" x2="884" y1="350.0" y2="350.0" stroke="#ddd"/>
+<text x="38.0" y="354.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">20</text>
+<line x1="46" x2="884" y1="310.0" y2="310.0" stroke="#ddd"/>
+<text x="38.0" y="314.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">24</text>
+<rect x="77.5" y="465.2" width="36.3" height="84.8" fill="#1a5c2a" rx="2"/>
+<line x1="95.7" x2="95.7" y1="465.2" y2="442.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="91.7" x2="99.7" y1="442.5" y2="442.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="95.7" y="478.2" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">8.48</text>
+<rect x="117.8" y="483.0" width="36.3" height="67.0" fill="#2a6f97" rx="2"/>
+<line x1="136.0" x2="136.0" y1="483.0" y2="467.3" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="132.0" x2="140.0" y1="467.3" y2="467.3" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="136.0" y="496.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.7</text>
+<line x1="51.6" x2="180.1" y1="440.0" y2="440.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="115.8" y="434.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">11 min walk</text>
+<rect x="217.2" y="522.8" width="36.3" height="27.2" fill="#1a5c2a" rx="2"/>
+<line x1="235.3" x2="235.3" y1="522.8" y2="512.2" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="231.3" x2="239.3" y1="512.2" y2="512.2" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="235.3" y="535.8" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">2.72</text>
+<rect x="257.5" y="517.5" width="36.3" height="32.5" fill="#2a6f97" rx="2"/>
+<line x1="275.7" x2="275.7" y1="517.5" y2="504.7" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="271.7" x2="279.7" y1="504.7" y2="504.7" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="275.7" y="530.5" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">3.25</text>
+<line x1="191.3" x2="319.7" y1="440.0" y2="440.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="255.5" y="434.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">11 min walk</text>
+<rect x="356.9" y="535.2" width="36.3" height="14.8" fill="#1a5c2a" rx="2"/>
+<line x1="375.0" x2="375.0" y1="535.2" y2="528.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="371.0" x2="379.0" y1="528.3" y2="528.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="375.0" y="548.2" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">1.48</text>
+<rect x="397.2" y="529.5" width="36.3" height="20.5" fill="#2a6f97" rx="2"/>
+<line x1="415.3" x2="415.3" y1="529.5" y2="521.8" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="411.3" x2="419.3" y1="521.8" y2="521.8" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="415.3" y="542.5" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">2.05</text>
+<line x1="330.9" x2="459.4" y1="450.0" y2="450.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="395.2" y="444.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">10 min walk</text>
+<rect x="496.5" y="486.3" width="36.3" height="63.7" fill="#1a5c2a" rx="2"/>
+<line x1="514.7" x2="514.7" y1="486.3" y2="458.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="510.7" x2="518.7" y1="458.5" y2="458.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="514.7" y="499.3" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.37</text>
+<rect x="536.8" y="486.8" width="36.3" height="63.2" fill="#2a6f97" rx="2"/>
+<line x1="555.0" x2="555.0" y1="486.8" y2="456.3" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="551.0" x2="559.0" y1="456.3" y2="456.3" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="555.0" y="499.8" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.32</text>
+<line x1="470.6" x2="599.1" y1="390.0" y2="390.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="534.8" y="384.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">16 min walk</text>
+<rect x="636.2" y="503.5" width="36.3" height="46.5" fill="#1a5c2a" rx="2"/>
+<line x1="654.3" x2="654.3" y1="503.5" y2="462.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="650.3" x2="658.3" y1="462.3" y2="462.3" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="654.3" y="516.5" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">4.65</text>
+<rect x="676.5" y="521.5" width="36.3" height="28.5" fill="#2a6f97" rx="2"/>
+<line x1="694.7" x2="694.7" y1="521.5" y2="510.8" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="690.7" x2="698.7" y1="510.8" y2="510.8" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="694.7" y="534.5" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">2.85</text>
+<line x1="610.3" x2="738.7" y1="450.0" y2="450.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="674.5" y="444.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">10 min walk</text>
+<rect x="775.9" y="487.7" width="36.3" height="62.3" fill="#1a5c2a" rx="2"/>
+<line x1="794.0" x2="794.0" y1="487.7" y2="457.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<line x1="790.0" x2="798.0" y1="457.5" y2="457.5" stroke="#1a5c2a" stroke-width="1.6"/>
+<text x="794.0" y="500.7" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.23</text>
+<rect x="816.2" y="486.3" width="36.3" height="63.7" fill="#2a6f97" rx="2"/>
+<line x1="834.3" x2="834.3" y1="486.3" y2="462.8" stroke="#2a6f97" stroke-width="1.6"/>
+<line x1="830.3" x2="838.3" y1="462.8" y2="462.8" stroke="#2a6f97" stroke-width="1.6"/>
+<text x="834.3" y="499.3" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#fff" font-weight="700">6.37</text>
+<line x1="749.9" x2="878.4" y1="320.0" y2="320.0" stroke="#c0392b" stroke-width="3" stroke-dasharray="8 4"/>
+<text x="814.2" y="314.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="700">23 min walk</text>
+<line x1="46" x2="884" y1="550" y2="550" stroke="#bbb"/>
+<text x="115.8" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">Dedham Mall</text>
+<text x="115.8" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ Grove St</text>
+<text x="255.5" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">Grove St</text>
+<text x="255.5" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ W Boundary Rd</text>
+<text x="395.2" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">W Boundary Rd</text>
+<text x="395.2" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ Lagrange St</text>
+<text x="534.8" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">Lagrange St</text>
+<text x="534.8" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ Metropolitan Av</text>
+<text x="674.5" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">Metropolitan Av</text>
+<text x="674.5" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ Poplar/South</text>
+<text x="814.2" y="568.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#222" font-weight="400">Poplar/South</text>
+<text x="814.2" y="582.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">↓ Forest Hills</text>
+</svg>
+<figcaption>Routes 34 and 34E, every block on the Washington St spine, weekdays 2025–Jun 2026. Bars are the median trip, whiskers the 90th percentile, and the red rule is walking the same block — measured along the bus route's own path at 4.8 km/h, which reproduces Google's walking estimates to within a minute. Green is inbound, blue outbound.</figcaption>
+</figure>
+
+<p>Two things jump out that no amount of corridor-level averaging would have shown.</p>
+
+<p><strong>The worst block is not in Roslindale.</strong> Dedham Mall to Grove St runs a median of 8.48 minutes in the afternoon against an eleven-minute walk — the bus is <strong>1.3 times walking pace</strong>. At the 90th percentile it is 10.75 minutes, which is <em>parity with a pedestrian</em>. That block has no lane, in either direction, at any hour.</p>
+
+<p><strong>Metropolitan Ave to Poplar St is the least reliable.</strong> Median 4.65 minutes in the afternoon, but a 90th percentile of 8.77 — nearly double, and about 3.5 mph. That is the block that got the 2023 lane extension, measured in the afternoon when the lane does not run.</p>
+
+<p>By contrast the long lane block, Poplar Street to Forest Hills, does 1.86 km at <strong>13.8 mph in the morning</strong> — 4.6 times walking, with a tight whisker. Whether that is the lane working or simply easier geometry, this chart cannot say. But it is the one block where the red line is nowhere near the bars.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>5. It is getting worse, and it is not crowding</h2>
+
+<figure>
+<svg viewBox="0 0 900 300" width="100%" role="img" aria-label="Morning run time by year, 2020 to 2026">
+<rect x="46" y="26" width="173.5" height="230" fill="#f2f2ee"/>
+<text x="132.8" y="248.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">covid — not a baseline</text>
+<line x1="46" x2="740" y1="256.0" y2="256.0" stroke="#ddd"/>
+<text x="38.0" y="260.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2</text>
+<line x1="46" x2="740" y1="179.3" y2="179.3" stroke="#ddd"/>
+<text x="38.0" y="183.3" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">4</text>
+<line x1="46" x2="740" y1="102.7" y2="102.7" stroke="#ddd"/>
+<text x="38.0" y="106.7" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6</text>
+<line x1="46" x2="740" y1="26.0" y2="26.0" stroke="#ddd"/>
+<text x="38.0" y="30.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">8</text>
+<text x="46.0" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2020</text>
+<text x="161.7" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2021</text>
+<text x="277.3" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2022</text>
+<text x="393.0" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2023</text>
+<text x="508.7" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2024</text>
+<text x="624.3" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2025</text>
+<text x="740.0" y="274.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">2026</text>
+<text x="38.0" y="20.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">min</text>
+<polyline points="46.0,117.2 161.7,142.2 277.3,111.1 393.0,106.5 508.7,86.2 624.3,81.6 740.0,51.7" fill="none" stroke="#2a6f97" stroke-width="2.5"/>
+<circle cx="46.0" cy="117.2" r="3.5" fill="#2a6f97"/>
+<circle cx="161.7" cy="142.2" r="3.5" fill="#2a6f97"/>
+<circle cx="277.3" cy="111.1" r="3.5" fill="#2a6f97"/>
+<circle cx="393.0" cy="106.5" r="3.5" fill="#2a6f97"/>
+<circle cx="508.7" cy="86.2" r="3.5" fill="#2a6f97"/>
+<circle cx="624.3" cy="81.6" r="3.5" fill="#2a6f97"/>
+<circle cx="740.0" cy="51.7" r="3.5" fill="#2a6f97"/>
+<text x="748.0" y="55.7" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#2a6f97" font-weight="700">90th percentile</text>
+<text x="748.0" y="69.7" text-anchor="start" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">5.62 → 7.33 min</text>
+<polyline points="46.0,187.0 161.7,193.5 277.3,169.8 393.0,160.2 508.7,149.8 624.3,145.6 740.0,130.3" fill="none" stroke="#1a5c2a" stroke-width="2.5"/>
+<circle cx="46.0" cy="187.0" r="3.5" fill="#1a5c2a"/>
+<circle cx="161.7" cy="193.5" r="3.5" fill="#1a5c2a"/>
+<circle cx="277.3" cy="169.8" r="3.5" fill="#1a5c2a"/>
+<circle cx="393.0" cy="160.2" r="3.5" fill="#1a5c2a"/>
+<circle cx="508.7" cy="149.8" r="3.5" fill="#1a5c2a"/>
+<circle cx="624.3" cy="145.6" r="3.5" fill="#1a5c2a"/>
+<circle cx="740.0" cy="130.3" r="3.5" fill="#1a5c2a"/>
+<text x="748.0" y="134.3" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#1a5c2a" font-weight="700">median</text>
+<text x="748.0" y="148.3" text-anchor="start" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">3.8 → 5.28 min</text>
+</svg>
+<figcaption>Median and 90th-percentile run time, Roslindale Sq → Forest Hills, weekday mornings inside the lane window. January–June of each year only, so the seasons match and 2026 is comparable. 2020 and 2021 are pandemic years and are not a usable baseline.</figcaption>
+</figure>
+
+<p>From 2022 the line points one way. The morning median has gone <strong>4.23 → 5.27 minutes</strong> and the 90th percentile <strong>5.70 → 7.27</strong>. Measured from the 2021 floor, the afternoon 90th percentile has risen <strong>64%</strong>.</p>
+
+<p>The obvious objection is crowding: the MBTA cut scheduled trips on this corridor by about a quarter over the same period, so each remaining bus carries more people and dwells longer. That is real, but small. Estimating dwell growth from stop-level boardings inside each segment accounts for <strong>19%</strong> of the morning slowdown and <strong>11%</strong> of the afternoon one. The other four-fifths is traffic.</p>
+
+<p>Note also that the 90th percentile is pulling away from the median faster than the median is rising. That is the signature of a corridor becoming less <em>predictable</em> rather than uniformly slower — and unreliability, not average speed, is what makes people give up on a bus.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>6. Two-thirds of the worst hour is the school year</h2>
+
+<p>Why is the afternoon so much worse than the morning? The tempting answer is that this is a neighbourhood street rather than a commuter one. Two tests say that is half right, and the half it gets wrong matters.</p>
+
+<p>First, difference each weekday hour against the same hour on a Saturday. That strips out the all-day errand load — which is genuinely large here, and peaks at <em>midday</em> on weekends, because Roslindale Square is a destination and not just a through route. What is left is a clean twin-peak commute signature: <strong>+1.5 minutes at 7–8am, +2.3 at 4pm, and almost exactly zero from 11 to 1</strong>. This is a commuting corridor. It only looked otherwise because weekday midday is not a quiet baseline.</p>
+
+<figure>
+<svg viewBox="0 0 900 320" width="100%" role="img" aria-label="School year, summer and Saturday run time by hour">
+<line x1="46" x2="730" y1="251.5" y2="251.5" stroke="#ddd"/>
+<text x="38.0" y="255.5" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">3</text>
+<line x1="46" x2="730" y1="206.4" y2="206.4" stroke="#ddd"/>
+<text x="38.0" y="210.4" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">4</text>
+<line x1="46" x2="730" y1="161.3" y2="161.3" stroke="#ddd"/>
+<text x="38.0" y="165.3" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">5</text>
+<line x1="46" x2="730" y1="116.2" y2="116.2" stroke="#ddd"/>
+<text x="38.0" y="120.2" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6</text>
+<line x1="46" x2="730" y1="71.1" y2="71.1" stroke="#ddd"/>
+<text x="38.0" y="75.1" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">7</text>
+<line x1="46" x2="730" y1="26.0" y2="26.0" stroke="#ddd"/>
+<text x="38.0" y="30.0" text-anchor="end" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">8</text>
+<text x="88.8" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6am</text>
+<text x="217.0" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">9am</text>
+<text x="345.2" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">noon</text>
+<text x="473.5" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">3pm</text>
+<text x="601.8" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">6pm</text>
+<text x="730.0" y="292.0" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#777" font-weight="400">9pm</text>
+<line x1="516.2" x2="516.2" y1="26" y2="274" stroke="#c0392b" stroke-dasharray="3 3" opacity=".6"/>
+<text x="516.2" y="20.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c0392b" font-weight="400">4pm</text>
+<text x="38.0" y="20.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">min</text>
+<polyline points="46.0,237.9 88.8,178.0 131.5,159.9 174.2,152.3 217.0,164.4 259.8,183.8 302.5,186.1 345.2,173.9 388.0,173.4 430.8,157.7 473.5,124.3 516.2,56.7 559.0,126.1 601.8,167.1 644.5,196.0 687.2,203.2 730.0,214.5" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+<text x="738.0" y="218.5" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#c0392b" font-weight="700">Weekday, school year</text>
+<text x="738.0" y="232.5" text-anchor="start" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">7.32 min at 4pm</text>
+<polyline points="46.0,243.3 88.8,221.2 131.5,191.9 174.2,171.6 217.0,175.7 259.8,187.0 302.5,180.7 345.2,171.2 388.0,171.6 430.8,165.8 473.5,146.8 516.2,136.5 559.0,141.0 601.8,172.5 644.5,194.2 687.2,194.6 730.0,210.9" fill="none" stroke="#2a6f97" stroke-width="2.5"/>
+<text x="738.0" y="214.9" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#2a6f97" font-weight="700">Weekday, summer</text>
+<text x="738.0" y="228.9" text-anchor="start" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">5.55 min at 4pm</text>
+<polyline points="46.0,232.5 88.8,240.2 131.5,235.7 174.2,220.8 217.0,205.0 259.8,188.3 302.5,178.0 345.2,178.0 388.0,171.2 430.8,171.6 473.5,170.7 516.2,181.6 559.0,182.5 601.8,191.0 644.5,196.4 687.2,199.6 730.0,209.5" fill="none" stroke="#1a5c2a" stroke-width="2.5"/>
+<text x="738.0" y="213.5" text-anchor="start" font-family="Georgia,serif" font-size="11" fill="#1a5c2a" font-weight="700">Saturday</text>
+<text x="738.0" y="227.5" text-anchor="start" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">4.55 min at 4pm</text>
+</svg>
+<figcaption>The same segment, three ways: weekdays in term time, weekdays in summer, and Saturdays. Saturday carries the neighbourhood's own traffic with neither commuting nor school on top of it.</figcaption>
+</figure>
+
+<p>Second, split the weekdays. At 4pm the median falls from <strong>7.3 minutes in October–November and March–April to 5.5 in July and August</strong>. At 5pm — the actual commute peak — it barely moves. At midday it does not move at all.</p>
+
+<p>The tell was in the shape all along: <strong>4pm is worse than 5pm</strong>, which is not what a commuter corridor does. So the worst hour decomposes into three layers. Saturday's 4.6 minutes are the street's own base load. Commuting adds about a minute. The school year adds nearly two more on top — dismissal traffic, pickup queues, and the students riding these buses.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>7. Where the rider-hours actually go</h2>
+
+<p>Multiplying each window's delay by the people aboard — from the MBTA's own stop-level load data — sorts the problem by size.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Segment and window</th><th>Lane</th><th>Median delay</th><th>90th pct</th><th>Trips &gt;2 min over</th><th>Rider-hrs/month</th></tr></thead>
+<tbody>
+<tr><td>↓ Rozzie Sq – Forest Hills<br><small>PM peak 15-18</small></td><td><span class="hi">lane</span></td><td>3.37</td><td>5.53</td><td>88%</td><td>1756</td></tr>
+<tr><td>↑ Metropolitan – Rozzie Sq<br><small>PM peak 15-18</small></td><td><span class="lo">no lane</span></td><td>2.95</td><td>6.75</td><td>71%</td><td>176</td></tr>
+<tr><td>↑ Rozzie Sq – Forest Hills<br><small>PM peak 15-18</small></td><td><span class="lo">no lane</span></td><td>2.72</td><td>5.92</td><td>68%</td><td>613</td></tr>
+<tr><td>↓ Rozzie Sq – Forest Hills<br><small>AM peak 07-10</small></td><td><span class="lo">no lane</span></td><td>2.12</td><td>3.68</td><td>54%</td><td>338</td></tr>
+<tr><td>↓ Metropolitan – Rozzie Sq<br><small>PM peak 15-18</small></td><td><span class="lo">no lane</span></td><td>1.78</td><td>2.92</td><td>37%</td><td>320</td></tr>
+<tr><td>↑ Rozzie Sq – Forest Hills<br><small>AM peak 07-10</small></td><td><span class="hi">lane</span></td><td>1.70</td><td>3.53</td><td>39%</td><td>616</td></tr>
+<tr><td>↑ Metropolitan – Rozzie Sq<br><small>AM peak 07-10</small></td><td><span class="hi">lane</span></td><td>1.47</td><td>3.15</td><td>32%</td><td>154</td></tr>
+<tr><td>↓ Metropolitan – Rozzie Sq<br><small>AM peak 07-10</small></td><td><span class="lo">no lane</span></td><td>1.08</td><td>1.92</td><td>8%</td><td>57</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>About 4,000 rider-hours a month are lost against free-flow across the corridor. Roughly 2,500 of that sits inside a lane that <em>already exists</em> — addressable by enforcement alone, with no new paint, no parking removal and no hearing. The afternoon outbound run is 70% of that.</p>
+
+<div class="caveat">
+<strong>Free-flow is a ceiling, not a promise.</strong> It is the observed median in the 5am hour — what these same buses do on this same geometry when nothing is in the way. Fewer people board at 5am, so a little of the gap is dwell rather than traffic. Comparing against midday instead roughly halves every figure, and does not change the ranking.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>8. The outbound lane worked once. Half of it is gone.</h2>
+
+<p>The archive starts in January 2020 and the outbound lane was painted in April 2021, so this one lane has a genuine before period. In the same six weeks of the year, the afternoon run from Forest Hills to Roslindale Square went from <strong>7.40 minutes median and 10.61 at the 90th percentile in early 2020</strong> — before any lane — to <strong>5.37 and 7.70 in early 2022</strong>.</p>
+
+<p>How much of that was the lane and how much was traffic that had not yet returned is genuinely uncertain, because the painting happened during the pandemic. Carrying four untreated comparison cells alongside — the opposite direction at the same hours, the same direction at other hours, and the stretch south of the square that never got a lane — puts the lane's own contribution somewhere between <strong>0.9 and 2.5 minutes of median</strong>. Even the bottom of that range is a real result.</p>
+
+<p>The part that needs no causal argument is what has happened since. January–February medians run 5.37, 5.85, 5.80, 5.92, and <strong>6.32 in 2026</strong>. The 90th percentile 7.70 → <strong>9.12</strong>. Against the pre-lane 2020 baseline, <strong>roughly half the improvement has been handed back in four years</strong> — and nothing about the lane itself has changed. What changed is how well it is respected.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>9. Nothing happens when the lane switches on or off</h2>
+
+<p>A time-restricted lane offers the cleanest test there is. At 10am the inbound lane stops being a bus lane and becomes a parking lane; at 2pm the outbound one becomes a bus lane. If the paint changes behaviour, run times should <em>step</em> at those moments.</p>
+
+<p>They do not. Fitting a local linear trend either side of each boundary, on 199 snow-free 2025 weekdays, gives steps of <strong>−0.30, +0.07 and −0.10 minutes</strong>. Before reading anything into the small negative, I ran the same estimator at fifteen fake boundaries at half-hour marks where nothing changes. Six of eighteen produced "steps" whose confidence intervals excluded zero, where one would be expected by chance. The estimator has a noise floor of about <strong>±0.3 minutes</strong> and the real boundaries sit unremarkably inside it.</p>
+
+<p>So the honest reading is not "the lane does nothing." It is that <strong>this test cannot see the lane, and the reason is instructive</strong>: by the time each boundary arrives there is almost nothing left to protect against. In the half hour either side of them, weekday run times differ from Saturday by −0.25, +0.25 and +0.32 minutes. The lane hours open before the congestion arrives and close after it has gone, so the moments we can test are the moments the street is already quiet.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>10. Does the method actually detect anything?</h2>
+
+<p>Two nulls in a row is the point at which you should start doubting the instrument rather than the world. So I pointed the same pipeline at Columbus Avenue, where the City has already published an answer.</p>
+
+<p>Running my estimator on <em>the City's own windows</em> — Fall 2021 before, Winter 2022 after, no control segment, exactly their design — gives a round-trip median of <strong>11.4 → 9.8 minutes</strong> against their reported ~13 → ~11, and peak 90th-percentile improvements of <strong>3.0 minutes inbound and 5.4 outbound</strong> against their reported ~3.5 each way. Same direction, same magnitude, independent pipeline. The method reproduces a published result it had no hand in producing.</p>
+
+<p>With controls added — two adjacent untreated segments on the same routes, which the City's study did not have — the effect is unambiguous but <em>asymmetric</em>: outbound at the afternoon peak improves by 0.94 minutes on the median and 2.53 at the 90th percentile, which is 8 and 15 placebo standard deviations. Inbound shows nothing detectable. The City's "3.5 minutes in each direction" does not survive a controlled analysis. The benefit is real and large; it is concentrated southbound in the afternoon.</p>
+
+<div class="note">
+<strong>Why this matters more than the number:</strong> the same method that finds a 15-sigma effect on Columbus Ave finds nothing at the Roslindale lane boundaries. That makes the nulls credible — they are a sensitive instrument reporting an absence, not a blunt one failing to detect anything.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>11. The removal that cannot be measured</h2>
+
+<p>In July 2025 the city repaved North Washington Street, erasing the northbound bus lane that had been there since 2021, and confirmed it would not be restored. Roughly 15,000 daily riders use those routes; about two-thirds are on the 111 to Chelsea, a route where 63% of riders identify as Hispanic or Latino and 90% are low-income.</p>
+
+<p>It should be the cleanest natural experiment available: a sharp date, a southbound lane that survived as a control, and ten times the trip volume of Roslindale. The answer is <strong>no detectable effect</strong> — a difference-in-differences of +0.25 minutes against a placebo distribution ranging −0.11 to +0.44.</p>
+
+<p>Getting there meant unpicking three traps, and the first nearly produced a spectacular false positive. My first run showed the 90th percentile exploding from 7.4 to 17.6 minutes — apparently catastrophic harm. It was an artefact. At a route's starting terminal the archive logs the <em>arrival</em> when a bus pulls in early and waits, so the "departure" from Haymarket included the layover. The share of trips recorded as leaving before their scheduled time went from 6% to 29% between March and July 2025 — a schedule change adding recovery time, not traffic. Correcting it collapsed the 19-minute p90 back to a stable 5. A second trap: the scheduled run time for that segment <em>more than doubled</em> in spring 2025, landing right on top of the removal.</p>
+
+<p>A null here is plausible rather than merely noisy. StreetsblogMASS reported that bridge construction had already "reduced travel lanes from two to one, creating a bottleneck at Causeway Street, pushing traffic into the bus lane, and blocking its potential." A lane that was not functioning will not be missed when it goes. That cuts against the advocacy narrative, and it is what the data says.</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>12. What to actually ask for</h2>
+
+<p>Massachusetts authorised automated bus-lane camera enforcement, and the MBTA's programme launches on routes SL4 and SL5 in late 2026, expanding to further routes in early 2027. There are no published criteria for how corridors get selected for that expansion, which means the list is being assembled now and informally.</p>
+
+<ol>
+<li><strong>Put enforcement on the outbound afternoon lane first.</strong> Forest Hills → Roslindale Square, 2–7pm. The lane already exists and already has legal force; 88% of trips still run over. It is the only window on the corridor where enforcement alone can recover the time, and the one place we can show the lane <em>did</em> work — it cut two minutes off the afternoon run when painted in 2021 and has given back about half since. Roughly 1,760 rider-hours a month.</li>
+<li><strong>Extend the inbound lane into the afternoon — during the school year.</strong> The worst hour on the corridor is 4pm inbound and it has no protection at any hour. Because two-thirds of that peak is term-time traffic, a school-year afternoon lane captures most of the benefit for a fraction of the fight: no summer disruption to argue about, and a constituency of parents and students who can be brought to a hearing.</li>
+<li><strong>Ask why the morning slid 25%.</strong> The lane that works has lost a quarter of its speed since 2022 and only a fifth of that is crowding. Nobody appears to be tracking it. A corridor whose one success is quietly eroding is an argument for putting measurement on a standing footing rather than commissioning another one-off study.</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<h2>Method, and what would break it</h2>
+
+<p>Every figure comes from the MBTA's published Bus Arrival/Departure Times archive — one row per bus per checkpoint — for the nine routes that drive this corridor, January 2020 to June 2026. Segment time is the gap between consecutive checkpoints, so it excludes the schedule entirely. Ridership weights come from the MBTA's per-trip stop-level load archive.</p>
+
+<div class="caveat">
+<strong>Traps in this data, for anyone else who wants to use it.</strong>
+<ul>
+<li><strong>It silently switches to UTC.</strong> Service dates from June 2024 to January 2026 are published five hours ahead of local time, then revert. Uncorrected, this scrambles any hour-of-day analysis — and it is not DST-aware, so it is a flat five hours year-round.</li>
+<li><strong>Startpoint times are not departures.</strong> When a bus pulls into a terminal early and lays over, the archive logs the arrival. Taking the later of actual and scheduled fixes it. On route 111 at Haymarket this inflated the 90th percentile fourfold.</li>
+<li><strong>Routes traverse the same checkpoints in opposite order.</strong> Routes 22 and 44 both touch Jackson Square and Roxbury Crossing, but the 44 runs an entire Roxbury loop between them. Pairing checkpoints within each <em>trip</em>, rather than per route, is the only safe construction.</li>
+<li><strong>Three different column schemas</strong> across the ridership archive's seasons, two timestamp formats, quarterly files with spaces in the names for 2020, and route IDs that are zero-padded — route 9 is <code>"09"</code>.</li>
+</ul>
+</div>
+
+<p>Other limits worth stating plainly. The southern segment starts at Metropolitan Ave rather than Albano St, because there is no checkpoint at Albano. Route 50 drives that segment but carries no checkpoint on it, so it is timed on three routes and weighted on four. And 2020–21 are pandemic years, excluded from every trend claim.</p>
+
+<div class="sources">
+<strong>Sources.</strong>
+MBTA Bus Arrival Departure Times, 2020–2026, and MBTA Bus Ridership by Trip, Season, Route, Line and Stop — both via the MassGIS / MBTA Open Data Portal.
+Lane extents, hours and timeline from the City of Boston Roslindale Bus Lanes project page and its July 2025 Project Snapshot.
+Columbus Avenue comparison from the City of Boston / Nelson\Nygaard evaluation of July 2023 and the MBTA Columbus Ave Phase I &amp; II review of February 2025.
+North Washington Street from City of Boston and StreetsblogMASS reporting, July 2025.
+MBTA Automated Camera Enforcement Program timeline from mbta.com.
+</div>
+
+</body>
+</html>
