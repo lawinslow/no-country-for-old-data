@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Saturday That Didn't Happen</title>
+<style>
+body { font-family: Georgia, serif; max-width: 960px; margin: 40px auto; padding: 0 24px; color: #222; line-height: 1.7; background: #fafaf8; }
+h1 { color: #1a5c2a; border-bottom: 3px solid #1a5c2a; padding-bottom: 8px; }
+h2 { color: #1a5c2a; margin-top: 2.2em; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+h3 { color: #333; margin-top: 1.4em; }
+p { margin: .7em 0; }
+.note   { background: #f0f8f2; border-left: 4px solid #1a5c2a; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+.caveat { background: #fff8e1; border-left: 4px solid #f0a500; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .93em; }
+.sources { background: #f5f5f5; border-left: 4px solid #aaa; padding: 12px 16px; border-radius: 3px; margin: 1.2em 0; font-size: .85em; }
+table { border-collapse: collapse; width: 100%; font-size: .83em; margin: 1em 0; }
+th { background: #1a5c2a; color: #fff; padding: 7px 8px; text-align: center; }
+th:first-child { text-align: left; }
+td { padding: 5px 8px; border-bottom: 1px solid #ddd; text-align: center; }
+td:first-child { text-align: left; }
+tr:nth-child(even) td { background: #f4faf6; }
+td small { color: #777; }
+.hi  { color: #1a5c2a; font-weight: bold; }
+.lo  { color: #c0392b; }
+.neg { color: #c0392b; }
+.pos { color: #1a5c2a; }
+ul li { margin: .35em 0; }
+.byline { color: #666; font-style: italic; font-size: .95em; margin-top: -.3em; }
+figure { margin: 1.6em 0; }
+figcaption { font-size: .82em; color: #777; margin-top: .5em; line-height: 1.55; }
+pre { background: #f5f5f5; border-left: 4px solid #aaa; padding: 12px 16px; overflow-x: auto; font-size: .78em; line-height: 1.5; }
+.aibanner { background: #eceaf5; border: 1px solid #b9b2d6; border-left: 5px solid #6b5b9a;
+  border-radius: 3px; padding: 11px 16px; margin: 0 0 1.6em; font-size: .9em; color: #3d3560;
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif; }
+.aibanner strong { color: #2e2749; }
+.back { font-size: .85em; margin-bottom: 1.5em; }
+.back a { color: #1a5c2a; }
+.tablewrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<div class="back"><a href="index.html">&larr; No Country for Old Data</a></div>
+
+<div class="aibanner"><strong>AI draft, Luke finalized.</strong></div>
+
+<h1>The Saturday That Didn&rsquo;t Happen</h1>
+<p class="byline">October 2026 &middot; Data: GTFS-realtime vehicle positions collected continuously since 29 August 2026</p>
+
+<div class="note">
+<strong>Summary:</strong> Buses leaving Roslindale Square on a Saturday morning lose about
+<strong>a minute and a quarter</strong> to traffic in an 800-metre stretch north of the Square &mdash;
+roughly <strong>three times</strong> the weekday figure for the same hours, in a window when no bus
+lane is in force. On 26 September a nor&rsquo;easter hit Boston and that congestion
+<strong>vanished entirely</strong>: not reduced, zero. The same number of buses drove the same road.
+Across the rest of the MBTA bus network that storm changed Saturday congestion by six percent.
+This is a natural experiment that costs nothing to run, and it points at a 4&frac12;-hour window
+the corridor&rsquo;s bus lanes do not cover.
+</div>
+
+<h2>1. A corridor that is worse on Saturday than on a weekday</h2>
+
+<p>Washington Street in Roslindale has bus lanes inbound in the morning and outbound in the
+afternoon. Neither operates at the weekend. For most of the week that hardly matters &mdash;
+Saturday and Sunday are quieter than weekdays almost everywhere on the MBTA.</p>
+
+<p>Not here. Measuring the time an outbound bus spends <em>halted</em> &mdash; standing still more
+than 35 metres from any stop, so stuck in traffic rather than picking anybody up &mdash; Saturday
+late mornings on this corridor are <strong>worse than any weekday hour outside the evening
+peak</strong>. Between 10am and 2pm the average outbound bus loses 79 seconds. The weekday
+average for the same hours is 24.</p>
+
+<figure>
+<svg viewBox="0 0 900 318" width="100%" role="img" aria-label="Halt time per outbound bus by hour on market Saturdays, the storm Saturday and weekdays">
+<rect x="151.7" y="52" width="421.7" height="210" fill="#e8e8e0" fill-opacity=".55"/>
+<text x="157.7" y="66.0" text-anchor="start" font-family="Georgia,serif" font-size="9.5" fill="#7a7a70" font-weight="400">farmers market, 9:00–1:30</text>
+<line x1="58" x2="714" y1="262.0" y2="262.0" stroke="#e2e2dd"/>
+<text x="49.0" y="266.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">0</text>
+<line x1="58" x2="714" y1="221.0" y2="221.0" stroke="#e2e2dd"/>
+<text x="49.0" y="225.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">25</text>
+<line x1="58" x2="714" y1="180.0" y2="180.0" stroke="#e2e2dd"/>
+<text x="49.0" y="184.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">50</text>
+<line x1="58" x2="714" y1="139.0" y2="139.0" stroke="#e2e2dd"/>
+<text x="49.0" y="143.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">75</text>
+<line x1="58" x2="714" y1="97.9" y2="97.9" stroke="#e2e2dd"/>
+<text x="49.0" y="101.9" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">100</text>
+<line x1="58" x2="714" y1="56.9" y2="56.9" stroke="#e2e2dd"/>
+<text x="49.0" y="60.9" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">125</text>
+<text x="20.0" y="157.0" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" fill="#777" font-weight="400" transform="rotate(-90 20 157.0)">seconds halted per bus</text>
+<path d="M58.0,222.2L151.7,224.1L245.4,241.6L339.1,226.4L432.9,204.1L526.6,223.2L620.3,234.4L714.0,230.5" fill="none" stroke="#9a9a8e" stroke-width="2.4" stroke-dasharray="5 4" stroke-linejoin="round"/>
+<circle cx="58.0" cy="222.2" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="151.7" cy="224.1" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="245.4" cy="241.6" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="339.1" cy="226.4" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="432.9" cy="204.1" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="526.6" cy="223.2" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="620.3" cy="234.4" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="714.0" cy="230.5" r="3.4" fill="#9a9a8e" stroke="#fafaf8" stroke-width="1.6"/>
+<path d="M58.0,247.1L151.7,235.3L245.4,253.9L339.1,247.3L432.9,245.4L526.6,243.8L620.3,244.3L714.0,250.0" fill="none" stroke="#2a78d6" stroke-width="2.6" stroke-linejoin="round"/>
+<circle cx="58.0" cy="247.1" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="151.7" cy="235.3" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="245.4" cy="253.9" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="339.1" cy="247.3" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="432.9" cy="245.4" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="526.6" cy="243.8" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="620.3" cy="244.3" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="714.0" cy="250.0" r="3.4" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.6"/>
+<path d="M58.0,254.0L151.7,224.0L245.4,176.4L339.1,78.9L432.9,139.1L526.6,197.2L620.3,241.9L714.0,232.4" fill="none" stroke="#c2432a" stroke-width="3.0" stroke-linejoin="round"/>
+<circle cx="58.0" cy="254.0" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="151.7" cy="224.0" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="245.4" cy="176.4" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="339.1" cy="78.9" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="432.9" cy="139.1" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="526.6" cy="197.2" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="620.3" cy="241.9" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<circle cx="714.0" cy="232.4" r="3.4" fill="#c2432a" stroke="#fafaf8" stroke-width="1.6"/>
+<text x="339.1" y="66.9" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="#c2432a" font-weight="700">112s</text>
+<text x="58.0" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">8am</text>
+<text x="151.7" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">9am</text>
+<text x="245.4" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">10am</text>
+<text x="339.1" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">11am</text>
+<text x="432.9" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">12pm</text>
+<text x="526.6" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">1pm</text>
+<text x="620.3" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">2pm</text>
+<text x="714.0" y="282.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">3pm</text>
+<text x="386.0" y="302.0" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" fill="#777" font-weight="400">hour of day</text>
+<line x1="728" x2="748" y1="70" y2="70" stroke="#c2432a" stroke-width="2.6"/>
+<text x="754.0" y="74.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">Market Saturdays</text>
+<text x="754.0" y="87.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">three days</text>
+<line x1="728" x2="748" y1="114" y2="114" stroke="#2a78d6" stroke-width="2.6"/>
+<text x="754.0" y="118.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">26 Sep</text>
+<text x="754.0" y="131.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">nor'easter</text>
+<line x1="728" x2="748" y1="158" y2="158" stroke="#9a9a8e" stroke-width="2.6" stroke-dasharray="5 4"/>
+<text x="754.0" y="162.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">Mon–Fri</text>
+<text x="754.0" y="175.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">20 days</text>
+</svg>
+<figcaption>Seconds an outbound bus spends stopped in traffic, by hour. Dwell at stops is
+excluded. The shaded band is the Roslindale Village farmers market&rsquo;s operating window at
+Adams Park. The Forest Hills terminal is excluded throughout, because outbound trips begin
+there and layover would swamp the measurement.</figcaption>
+</figure>
+
+<h2>2. It is one specific 800 metres</h2>
+
+<p>The excess is not spread along the corridor. It sits between roughly 200 and 1,000 metres
+north of the Poplar Street intersection &mdash; from Roslindale Square up past Firth Road and
+Granfield Avenue to about Whipple Avenue. South of the Square there is nothing. Past Whipple
+there is nothing.</p>
+
+<figure>
+<svg viewBox="0 0 900 366" width="100%" role="img" aria-label="Halt time per outbound bus along Washington Street on four Saturdays">
+<line x1="58" x2="714" y1="310.0" y2="310.0" stroke="#e2e2dd"/>
+<text x="49.0" y="314.0" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">0</text>
+<line x1="58" x2="714" y1="231.9" y2="231.9" stroke="#e2e2dd"/>
+<text x="49.0" y="235.9" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">10</text>
+<line x1="58" x2="714" y1="153.8" y2="153.8" stroke="#e2e2dd"/>
+<text x="49.0" y="157.8" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">20</text>
+<line x1="58" x2="714" y1="75.6" y2="75.6" stroke="#e2e2dd"/>
+<text x="49.0" y="79.6" text-anchor="end" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">30</text>
+<text x="20.0" y="185.0" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" fill="#777" font-weight="400" transform="rotate(-90 20 185.0)">seconds halted per bus</text>
+<line x1="203.8" x2="203.8" y1="60" y2="310" stroke="#c9c9c2" stroke-dasharray="2 3"/>
+<text x="203.8" y="52.0" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#666" font-weight="400">Poplar St</text>
+<line x1="286.9" x2="286.9" y1="60" y2="310" stroke="#c9c9c2" stroke-dasharray="2 3"/>
+<text x="286.9" y="52.0" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#666" font-weight="400">Cummins Hwy</text>
+<line x1="388.9" x2="388.9" y1="60" y2="310" stroke="#c9c9c2" stroke-dasharray="2 3"/>
+<text x="388.9" y="52.0" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#666" font-weight="400">Firth Rd</text>
+<line x1="455.6" x2="455.6" y1="60" y2="310" stroke="#c9c9c2" stroke-dasharray="2 3"/>
+<text x="455.6" y="52.0" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#666" font-weight="400">Granfield Ave</text>
+<line x1="534.3" x2="534.3" y1="60" y2="310" stroke="#c9c9c2" stroke-dasharray="2 3"/>
+<text x="534.3" y="52.0" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#666" font-weight="400">Whipple Ave</text>
+<path d="M94.4,299.5L167.3,309.2L240.2,286.9L313.1,307.2L386.0,299.1L458.9,306.3L531.8,309.4L604.7,305.8L677.6,309.7" fill="none" stroke="#9a9a8e" stroke-width="2.4" stroke-dasharray="5 4"/>
+<path d="M94.4,299.4L167.3,310.0L240.2,267.8L313.1,170.6L386.0,174.6L458.9,103.7L531.8,230.6L604.7,306.8L677.6,310.0" fill="none" stroke="#c2432a" stroke-width="1.8" stroke-linejoin="round" stroke-opacity=".75"/>
+<circle cx="94.4" cy="299.4" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="167.3" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="240.2" cy="267.8" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="313.1" cy="170.6" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="386.0" cy="174.6" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="458.9" cy="103.7" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="531.8" cy="230.6" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="604.7" cy="306.8" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="677.6" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<path d="M94.4,297.1L167.3,310.0L240.2,259.6L313.1,92.5L386.0,229.4L458.9,188.8L531.8,310.0L604.7,310.0L677.6,310.0" fill="none" stroke="#c2432a" stroke-width="1.8" stroke-linejoin="round" stroke-opacity=".75"/>
+<circle cx="94.4" cy="297.1" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="167.3" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="240.2" cy="259.6" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="313.1" cy="92.5" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="386.0" cy="229.4" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="458.9" cy="188.8" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="531.8" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="604.7" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="677.6" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<path d="M94.4,304.8L167.3,304.6L240.2,293.9L313.1,310.0L386.0,310.0L458.9,310.0L531.8,310.0L604.7,307.8L677.6,307.4" fill="none" stroke="#2a78d6" stroke-width="3.0" stroke-linejoin="round"/>
+<circle cx="94.4" cy="304.8" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="167.3" cy="304.6" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="240.2" cy="293.9" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="313.1" cy="310.0" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="386.0" cy="310.0" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="458.9" cy="310.0" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="531.8" cy="310.0" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="604.7" cy="307.8" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="677.6" cy="307.4" r="3.6" fill="#2a78d6" stroke="#fafaf8" stroke-width="1.4"/>
+<path d="M94.4,301.5L167.3,310.0L240.2,242.5L313.1,114.4L386.0,203.2L458.9,200.2L531.8,270.0L604.7,308.5L677.6,310.0" fill="none" stroke="#c2432a" stroke-width="1.8" stroke-linejoin="round" stroke-opacity=".75"/>
+<circle cx="94.4" cy="301.5" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="167.3" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="240.2" cy="242.5" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="313.1" cy="114.4" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="386.0" cy="203.2" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="458.9" cy="200.2" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="531.8" cy="270.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="604.7" cy="308.5" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<circle cx="677.6" cy="310.0" r="2.6" fill="#c2432a" stroke="#fafaf8" stroke-width="1.4"/>
+<text x="58.0" y="330.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">-400</text>
+<text x="203.8" y="330.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">0</text>
+<text x="349.6" y="330.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">+400</text>
+<text x="495.3" y="330.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">+800</text>
+<text x="641.1" y="330.0" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#777" font-weight="400">+1,200</text>
+<text x="386.0" y="350.0" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" fill="#777" font-weight="400">metres along the bus route from the Poplar St intersection</text>
+<line x1="728" x2="748" y1="78" y2="78" stroke="#c2432a" stroke-width="2.4"/>
+<text x="754.0" y="82.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">12, 19 Sep, 3 Oct</text>
+<text x="754.0" y="95.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">market Saturdays</text>
+<line x1="728" x2="748" y1="124" y2="124" stroke="#2a78d6" stroke-width="3"/>
+<text x="754.0" y="128.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">26 Sep</text>
+<text x="754.0" y="141.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">nor'easter</text>
+<line x1="728" x2="748" y1="170" y2="170" stroke="#9a9a8e" stroke-width="2.4" stroke-dasharray="5 4"/>
+<text x="754.0" y="174.0" text-anchor="start" font-family="Georgia,serif" font-size="10.5" fill="#222" font-weight="700">Mon–Fri</text>
+<text x="754.0" y="187.0" text-anchor="start" font-family="Georgia,serif" font-size="9" fill="#777" font-weight="400">same hours, 20 days</text>
+</svg>
+<figcaption>Halt time per outbound bus by position, 10am&ndash;2pm. Three Saturdays trace the
+same hump north of the Square. The fourth &mdash; the storm Saturday &mdash; is flat along its
+entire length, and the weekday reference barely leaves the floor.</figcaption>
+</figure>
+
+<h2>3. Then it rained, and the whole thing disappeared</h2>
+
+<p>On Saturday 26 September a nor&rsquo;easter crossed eastern Massachusetts. Blue Hill
+Observatory recorded 1.29 inches of rain by 1pm and a high of 58&deg;F, eleven degrees below
+normal. The farmers market, which runs rain or shine, went ahead.</p>
+
+<div class="tablewrap">
+<table>
+<tr><th>Saturday, 10am&ndash;2pm outbound</th><th>mean halt</th><th>median halt</th>
+<th>buses that halt</th><th>trips</th><th>position fixes in the band</th></tr>
+<tr><td><strong>Sat 12 Sep</strong> <small>market</small></td><td>89 s</td><td>73 s</td><td>80%</td><td>55</td><td>1,360</td></tr><tr><td><strong>Sat 19 Sep</strong> <small>market</small></td><td>74 s</td><td>66 s</td><td>84%</td><td>50</td><td>1,002</td></tr><tr><td><strong>Sat 26 Sep</strong> <small>nor'easter</small></td><td class="lo">9 s</td><td class="lo">0 s</td><td class="lo">43%</td><td>54</td><td class="lo">399</td></tr><tr><td><strong>Sat 3 Oct</strong> <small>market</small></td><td>76 s</td><td>62 s</td><td>92%</td><td>53</td><td>1,147</td></tr>
+</table>
+</div>
+
+<p>Three Saturdays agree closely: 89, 74 and 76 seconds, with the median bus losing more than
+a minute and 80 to 93 per cent of buses stopping at least once. On 26 September the mean was
+<strong>9 seconds</strong>, the median was <strong>zero</strong>, and in the critical 800-metre
+band the accumulated halt time in every single 200-metre bin was
+<strong>exactly 0.0 seconds</strong>.</p>
+
+<div class="note">
+<strong>It is not a detour and it is not a data gap.</strong> The number of trips through each
+200-metre bin is the same on all four Saturdays &mdash; 51 to 53 &mdash; across all nine routes.
+What changes is the number of position reports those buses emit while crossing the band:
+1,360, 1,002 and 1,147 on the market Saturdays against <strong>399</strong> on the storm
+Saturday. A bus that is stopped keeps reporting from the same spot. Three times fewer reports
+over the same ground, from the same number of buses, is what free flow looks like.
+</div>
+
+<h2>4. The control: the storm did almost nothing to the rest of the network</h2>
+
+<p>Rain slows traffic everywhere, so on its own a quiet storm Saturday proves little. The same
+measurement was therefore run across every MBTA bus route for the same four Saturdays and the
+same hours, using identical code.</p>
+
+<div class="tablewrap">
+<table>
+<tr><th>Saturday 10am&ndash;2pm</th><th>network-wide halt time</th><th>vs Saturday average</th></tr>
+<tr><td>12 Sep</td><td>22.3 s per vehicle-km</td><td>0.99&times;</td></tr>
+<tr><td>19 Sep</td><td>23.9 s per vehicle-km</td><td>1.06&times;</td></tr>
+<tr><td><strong>26 Sep</strong> <small>nor&rsquo;easter</small></td>
+    <td class="lo">21.2 s per vehicle-km</td><td class="lo">0.94&times;</td></tr>
+<tr><td>3 Oct</td><td>23.1 s per vehicle-km</td><td>1.02&times;</td></tr>
+</table>
+</div>
+
+<p>Six per cent. The storm that erased this corridor&rsquo;s Saturday congestion was, for the MBTA
+bus network as a whole, an ordinary Saturday. Whatever is happening on Washington Street is
+local and intensely weather-sensitive &mdash; the signature of discretionary trips, not of
+through traffic.</p>
+
+<h2>5. What this does and does not establish</h2>
+
+<p>It establishes that the Saturday congestion is <em>demand</em> rather than a permanent
+feature of the street. The road did not change on 26 September; the number of buses did not
+change; what changed is that fewer people chose to drive to Roslindale Square. Remove the
+discretionary trips and 800 metres of corridor goes to free flow.</p>
+
+<p>The obvious candidate for that demand is the farmers market, which runs at Adams Park beside
+the Square from 9:00 to 1:30 on exactly these Saturdays, and whose window brackets the
+congestion almost precisely. <strong>That part remains a hypothesis.</strong> These data
+cannot separate the market from everything else a dry Saturday morning brings to a village
+centre, and a market that runs rain or shine still ran on the storm day &mdash; it is attendance
+that collapsed, not the market. Confirming it would need an observer, or a Saturday when the
+market is cancelled for some reason other than weather.</p>
+
+<div class="caveat">
+<strong>Caveats.</strong> Four Saturdays, one of them the storm. Halt detection treats a bus as
+stopped when consecutive position reports show it moving under 2 km/h; anything within 35
+metres of a stop is counted as dwell and excluded, so a bus held at a red light beside a stop
+is not counted. The corridor measurement covers routes 30, 34, 34E, 35, 36, 37, 40, 50 and 51
+between Metropolitan Avenue and the Forest Hills approach, with the terminal itself excluded.
+</div>
+
+<h2>6. Why it matters for the lanes</h2>
+
+<p>The inbound lane runs 5&ndash;10am. The outbound lane runs 2&ndash;7pm. Neither operates at
+weekends, and the Saturday peak lands at <strong>11am</strong> &mdash; in the gap between the two
+windows even on a weekday. The stretch that goes to zero in a storm is the same ground the
+weekday afternoon outbound lane already covers; on Saturday that curb is open to general
+traffic and parking.</p>
+
+<p>So this is the corridor running a controlled experiment on itself: same street, same buses,
+same geometry, protection removed, three times the delay &mdash; and a storm week showing what
+the street does when the demand is taken away. Any argument about what a bus lane is worth here
+no longer has to be made by comparison with Columbus Avenue or with the rest of the network. It
+can be made from this corridor alone.</p>
+
+<div class="sources">
+<strong>Sources &amp; method.</strong> Vehicle positions from the MBTA GTFS-realtime feed,
+collected every 15 seconds since 29 August 2026 and archived daily. Halt detection, corridor
+projection and the network comparison all run from the same code; the network figures use
+MBTA GTFS stop locations for the dwell exclusion. Weather from the Blue Hill Meteorological
+Observatory record for 26 September 2026 and Boston Globe storm coverage. Farmers market hours
+from Roslindale Village Main Street.
+</div>
+
+</body>
+</html>
